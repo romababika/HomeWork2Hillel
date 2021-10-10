@@ -1,0 +1,111 @@
+<?php
+
+error_reporting(-1);
+
+$array= [
+    'one' => 1,
+    'three' => 3,
+    'foure' => 5,
+    'five' => 12,
+    'six' => 1,//22
+    'two' => [
+        'seven' => 22,
+        'elewen' => 22,//44
+    ],
+    'eleven' => [
+        'hungri' => 1,
+        'ader' => 2,//3
+    ],
+    'lmkj' => 5,
+    'fivepoiyu' => [
+        'threemnhy' => 32,
+        'fourendgfer' => 5,
+        'fiverwesd' => 12,//54+69=123
+],];
+
+
+$str="bla bla bla books debug";
+//$str=0265; Для проверки
+//$str="2569874563215897";  Для проверки
+
+
+
+//Создать функцию принимающую массив произвольной вложенности и определяющий любой элемент номер которого передан параметром во всех вложенных массивах.
+function arraySearch($array, $find)
+{
+    $r = [];
+    foreach ($array as $key => $item) {
+
+        if (is_array($item)) {
+            $r = array_merge($r, arraySearch($item, $find));
+        }
+        if ($key == $find) {
+            $r[] = $item;
+        }
+    }
+
+    return $r;
+
+}
+echo '<pre>';
+echo "Елемент  равен ";
+echo '<br>';
+var_dump(arraySearch($array,'threemnhy'));
+echo '</pre>';
+
+//Создать функцию которая считает все буквы b в переданной строке, в случае если передается не строка функция должна возвращать false
+
+function countsLetters(string $str,$letter)
+{
+
+    if (is_numeric($str)) {
+        echo "Это не строка из букв ";
+        echo '<br>';
+        return false;
+    }
+    if (strpos($str, $letter) !== false) {
+        echo ' Символ "'.$letter.'" есть в данной строке.'.' ' ;
+        echo "Встретился  " .mb_substr_count($str, $letter). ' '. "раз";
+    } else {
+        echo 'Символа "'.$letter.'" нет в данной строке.';
+    }
+}
+echo countsLetters($str,'b');
+echo '<br>';
+
+//Создать функцию которая считает сумму значений всех элементов массива произвольной глубины
+
+function sumArr($array) {
+    $sum = 0;
+    foreach($array as $v) {
+        if (is_array($v)) {
+            $sum += sumArr($v);
+        } else {
+            $sum += $v;
+        }
+    }
+    return $sum;
+}
+$sumNumbers=sumArr($array);
+echo "Сумма значений всех элементов массива  :{$sumNumbers}";
+echo '<br>';
+
+
+//Создать функцию которая определит сколько квадратов меньшего размера можно вписать в квадрат большего размера размер возвращать в float
+
+function sguareCount($sguare1,float $sguare2 )
+{
+    $P1=$sguare1*$sguare1;
+    $P2=$sguare2*$sguare2;
+    if ($P2/$P1>=1)
+    {
+         $countSguare=$P2/$P1;
+         echo "В квадрат размером {$sguare2} влезит {$countSguare} меньших квадратов";
+    }elseif ($P2/$P1<=1)
+    {
+        echo "Не влезит ни один квадрат";
+    }
+
+
+}
+echo sguareCount(5,10);
